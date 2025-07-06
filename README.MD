@@ -90,6 +90,7 @@ venv\Scripts\activate     # Windows
 - Khởi chạy ứng dụng tại địa chỉ: http://localhost:5000
 
 ## 📂 CẤU TRÚC THƯ MỤC
+```
 COPYRIGHTMUSICTRANSFER/
 ├── __pycache__/              # File tạm biên dịch Python
 ├── instance/
@@ -103,5 +104,5 @@ COPYRIGHTMUSICTRANSFER/
 ├── crypto_utils.py           # Mã hóa: RSA, 3DES, DES, SHA-512
 ├── secure_protocol.py        # Giao thức bảo mật, đóng gói/gỡ gói tin
 ├── main.py                   # Chạy app + tạo DB
-└── README.MD                 # Tài liệu mô tả hệ thống
-
+└── README.MD                 # Tài liệu mô tả hệ thống 
+```
