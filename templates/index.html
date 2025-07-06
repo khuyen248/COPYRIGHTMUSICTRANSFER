@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Truyền Nhạc An Toàn</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="text-center mb-5">
+                    <h1 class="display-4 mb-3">
+                        <i class="fas fa-shield-alt text-primary me-3"></i>
+                        Hệ Thống Truyền Nhạc An Toàn
+                    </h1>
+                    <p class="lead text-muted">
+                        Hỗ trợ nhiều phiên kết nối LAN: Một máy chủ có thể xử lý nhiều người gửi cùng lúc<br>
+                        Mã hóa Triple DES với chữ ký số RSA để truyền tải tập tin nhạc an toàn
+                    </p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Vai trò Người Gửi -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow">
+                            <div class="card-body text-center p-4">
+                                <div class="mb-4">
+                                    <i class="fas fa-upload fa-3x text-success"></i>
+                                </div>
+                                <h4 class="card-title mb-3">Nhà Phát Triển Nhạc</h4>
+                                <p class="card-text text-muted mb-4">
+                                    Tải lên và truyền tải an toàn các tập tin nhạc có bản quyền với chữ ký số và mã hóa
+                                </p>
+                                <a href="{{ url_for('sender') }}" class="btn btn-success btn-lg w-100">
+                                    <i class="fas fa-arrow-right me-2"></i>
+                                    Bắt Đầu Với Vai Trò Người Gửi
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vai trò Người Nhận -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow">
+                            <div class="card-body text-center p-4">
+                                <div class="mb-4">
+                                    <i class="fas fa-download fa-3x text-info"></i>
+                                </div>
+                                <h4 class="card-title mb-3">Nền Tảng Phát Nhạc</h4>
+                                <p class="card-text text-muted mb-4">
+                                    Nhận và xác thực các tập tin nhạc được mã hóa với chữ ký số từ nhà phát triển
+                                </p>
+                                <a href="{{ url_for('receiver') }}" class="btn btn-info btn-lg w-100">
+                                    <i class="fas fa-arrow-right me-2"></i>
+                                    Bắt Đầu Với Vai Trò Người Nhận
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông tin Giao thức -->
+                <div class="card mt-5 border-0 shadow">
+                    <div class="card-header bg-light border-0">
+                        <h5 class="mb-0 text-white">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Tổng Quan Giao Thức Bảo Mật
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-warning">Tiêu Chuẩn Mã Hóa</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Mã hóa Triple DES (3DES, khóa 192-bit)</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Chữ ký số RSA 1024-bit</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Hàm băm SHA-512</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-warning">Tính Năng Bảo Mật</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Xác thực mã nguồn</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Kiểm tra toàn vẹn dữ liệu</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Bảo vệ thông tin metadata</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
