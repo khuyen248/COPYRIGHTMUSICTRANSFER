@@ -1,104 +1,88 @@
 <h1 align="center">ATBMTT - Gửi Tập Tin Nhạc Có Bản Quyền </h1>
+ Một nhà phát triển ứng dụng âm nhạc gửi file song.mp3 đến nền tảng phát trực tuyến, kèm metadata bản quyền được  mã hóa riêng để bảo vệ quyền sở hữu. File được mã hóa bằng Triple DES và ký số để đảm bảo an toàn, với tính toàn  vẹn được kiểm tra để ngăn chặn giả mạo.
 
-## 📝 MÔ TẢ
-Hệ thống web cho phép người dùng gửi tập tin nhạc `.mp3` có bản quyền một cách **an toàn, bảo mật và toàn vẹn**.  
-Ứng dụng sử dụng các thuật toán mật mã để mã hóa nội dung, ký số metadata, kiểm tra toàn vẹn dữ liệu và xác thực nguồn gửi.
+### 1. GIỚI THIỆU
 
-## 🎯 Mục tiêu
-- Đảm bảo bản quyền và nội dung nhạc không bị giả mạo.
-- Truyền tải dữ liệu giữa bên gửi và bên nhận qua giao thức an toàn.
-- Mã hóa file, metadata và kiểm tra toàn vẹn dữ liệu.
+Trong thời đại chuyển đổi số, việc truyền tải nội dung số như âm nhạc cần đảm bảo các yếu tố về bản quyền, bảo mật và xác thực. Nếu không có các biện pháp bảo vệ, file nhạc có thể bị đánh cắp, chỉnh sửa hoặc phát tán trái phép.
 
+Đề tài này xây dựng một hệ thống truyền tập tin nhạc có bản quyền với các mục tiêu chính:
 
-## 🌟 TÍNH NĂNG NỔI BẬT
-🔐 Mã hóa file nhạc bằng Triple DES
+- Bảo mật nội dung tập tin nhạc bằng thuật toán Triple DES.
 
-🧾 Metadata được mã hóa bằng DES
+- Bảo vệ metadata (tên bài, bản quyền) bằng mã hóa DES.
 
-🖊️ Ký số bằng RSA/SHA-512 để xác thực
+- Xác thực người gửi bằng chữ ký số RSA 1024-bit (OAEP + SHA-512).
 
-✅ Kiểm tra toàn vẹn gói tin bằng SHA-512
+- Đảm bảo toàn vẹn dữ liệu bằng hàm băm SHA-512.
 
-🔄 Giao thức bắt tay xác minh danh tính
+- Hệ thống mô phỏng mô hình truyền dữ liệu giữa nhà phát triển và nền tảng phát nhạc.
 
-🌐 Giao diện web dễ dùng, gửi/nhận file nhanh chóng
+### 2. TRÌNH BÀY KỸ THUẬT
+   
+a. Kiến trúc hệ thống
+- Mô hình: Client – Server đơn giản mô phỏng vai trò:
 
-## 🔐 Công nghệ sử dụng
-- Flask (Python web framework)
-- SQLite (cơ sở dữ liệu nhẹ)
-- Thuật toán:
-  - Triple DES (mã hóa file nhạc)
-  - DES (mã hóa metadata)
-  - RSA 2048-bit (ký số và trao khóa)
-  - SHA-512 (kiểm tra toàn vẹn IV và ciphertext)
+  + Người gửi (Developer): chọn file, mã hóa, ký số và gửi.
+   
+  + Người nhận (Receiver): kiểm tra hash, xác thực chữ ký và giải mã.
 
-## 🔁 Quy trình xử lý
-1. **Handshake:**  
-   Bên gửi gửi “Hello!”, bên nhận trả lời “Ready!” và gửi public key.
+- Luồng xử lý:
 
-2. **Gửi file:**  
-   - Người dùng chọn file `.mp3` và nhập metadata (tiêu đề, tác giả, album, năm).
-   - File và metadata được mã hóa, ký số, đóng gói thành gói tin.
-3. **Gói tin gửi đi gồm:**
-```powershell
-{
-  "iv": "<Base64_IV>",
-  "cipher": "<Base64_file_mã_hóa>",
-  "meta": "<Base64_metadata_mã_hóa>",
-  "hash": "<SHA-512 của IV || cipher>",
-  "sig": "<Chữ ký RSA của metadata>",
-  "key": "<SessionKey + DES key được mã hóa RSA>"
-}
-   ```
-4. **Bên nhận:**
+![image](https://github.com/user-attachments/assets/a4979048-02c2-428c-a6a3-a46b02f7369c)
 
-- Giải mã session key bằng RSA
+b. Thành phần kỹ thuật
+- Triple DES (3DES):
 
-- Kiểm tra hash và chữ ký
+  + Mã hóa đối xứng 3 vòng
+  
+  + Tạo IV ngẫu nhiên cho mỗi lần mã hóa file.
 
-- Giải mã metadata và file
+- Mã hóa metadata bằng DES:
 
-- Cho phép tải về file gốc nếu hợp lệ
+  + Metadata gồm: tên file, tên nghệ sĩ, năm phát hành.
+  
+  + Dùng khóa DES 64-bit riêng để mã hóa riêng biệt phần thông tin bản quyền.
 
-## 🧾 HƯỚNG DẪN SỬ DỤNG 
-⚙️ 1. **Cài đặt môi trường**
+- RSA 1024-bit + OAEP:
 
-Bước 1: Cài Python (nếu chưa có)
-Yêu cầu: Python 3.8 trở lên
+ RSA được dùng để:
 
-Kiểm tra: 
-```
-powershellpython --version
-```
+  + Mã hóa session key (Triple DES key).
+  
+  + Ký số metadata sau khi băm bằng SHA-512.
+ 
+ Sử dụng OAEP + SHA-512 tăng cường chống phân tích.
 
-Bước 2: Cài thư viện
-Tạo và kích hoạt môi trường ảo (tuỳ chọn):
-``` 
-python -m venv venv
-source venv/bin/activate  # Linux/macOS
-venv\Scripts\activate     # Windows
- ```
+- SHA-512:
 
- Cài đặt các thư viện:
- ```
-pip install Flask Flask_SQLAlchemy cryptography pyDes
-``` 
+  + Băm dữ liệu (IV || ciphertext) để tạo hash kiểm tra toàn vẹn khi nhận.
 
- 🧠 **2. Khởi tạo cơ sở dữ liệu**
- Chạy main.py để tạo database music_transfer.db:
-```
-python main.py 
-```
-  Hệ thống sẽ:
+c. Các module chính
+- crypto_utils.py: Xử lý mã hóa DES, Triple DES, ký số RSA, sinh khóa, tính hash SHA-512.
 
-- Xoá và tạo mới toàn bộ bảng
+- secure_protocol.py: Định nghĩa quy trình đóng gói/gỡ gói bảo mật, handshake, ACK/NACK.
 
-- Khởi chạy ứng dụng tại địa chỉ: 
-```
-http://localhost:5000
-```
+- app.py: Xây dựng giao diện người gửi/người nhận bằng Flask, định tuyến URL.
 
-## 📂 CẤU TRÚC THƯ MỤC
+- main.py: Khởi tạo ứng dụng, tạo CSDL và chạy server Flask.
+
+⚙️ Công nghệ: Flask, cryptography, base64, hashlib, SQLAlchemy, uuid.
+
+d. Kết quả
+- Giao diện trang chủ
+![image](https://github.com/user-attachments/assets/1bf0fd03-90e3-4c02-a016-27edd619793e)
+- Giao diện trang người gửi
+![image](https://github.com/user-attachments/assets/c1e067ef-7baa-4e50-b1fa-bb2cf703ffce)
+- Giao diện hiển thị lịch sử file gửi
+![image](https://github.com/user-attachments/assets/d6a39899-491e-4dde-86e5-af9ccc532650)
+- Giao diện trang người nhận
+![image](https://github.com/user-attachments/assets/5f5b4b51-5ca6-4806-b76e-9f7ca33712a5)
+- Giao diện trang quản lý tập tin
+![image](https://github.com/user-attachments/assets/0ab1e7d7-9ee3-47a0-9bf0-be49d4955989)
+- Giao diện trang xử lý kết nối
+![image](https://github.com/user-attachments/assets/c1c3e5fb-8e5a-4d02-89b8-28ca808ae8e7)
+
+### 3. CẤU TRÚC THƯ MỤC
 ```
 COPYRIGHTMUSICTRANSFER/
 ├── __pycache__/              # File tạm biên dịch Python
@@ -115,3 +99,37 @@ COPYRIGHTMUSICTRANSFER/
 ├── main.py                   # Chạy app + tạo DB
 └── README.MD                 # Tài liệu mô tả hệ thống 
 ```
+
+### 4. CÁCH CÀI ĐẶT VÀ CHẠY
+a. Yêu cầu
+Python ≥ 3.8
+
+- Các thư viện:
+
+  + cryptography
+  
+  + flask
+  
+  + flask_sqlalchemy
+  
+  + uuid, hashlib, base64
+
+b. Cài đặt và chạy
+- Cài thư viện
+  
+   ```powershell
+  pip install cryptography flask flask_sqlalchemy
+   ```
+- Chạy server Flask
+
+   ```powershell
+   python main.py
+   ```
+
+- Truy cập giao diện
+Mở trình duyệt và truy cập:
+   ```powershell
+   http://127.0.0.1:5000
+   ```
+
+→ Chọn vai trò người gửi/người nhận để bắt đầu truyền file bảo mật.
