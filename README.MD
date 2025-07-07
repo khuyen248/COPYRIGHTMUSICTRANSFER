@@ -67,7 +67,9 @@ Bước 1: Cài Python (nếu chưa có)
 Yêu cầu: Python 3.8 trở lên
 
 Kiểm tra: 
-``` powershellpython --version ```
+```
+powershellpython --version
+```
 
 Bước 2: Cài thư viện
 Tạo và kích hoạt môi trường ảo (tuỳ chọn):
@@ -78,16 +80,23 @@ venv\Scripts\activate     # Windows
  ```
 
  Cài đặt các thư viện:
- ```pip install Flask Flask_SQLAlchemy cryptography pyDes``` 
+ ```
+pip install Flask Flask_SQLAlchemy cryptography pyDes
+``` 
 
  🧠 **2. Khởi tạo cơ sở dữ liệu**
  Chạy main.py để tạo database music_transfer.db:
-  ```python main.py ```
+```
+python main.py 
+```
   Hệ thống sẽ:
 
 - Xoá và tạo mới toàn bộ bảng
 
-- Khởi chạy ứng dụng tại địa chỉ: http://localhost:5000
+- Khởi chạy ứng dụng tại địa chỉ: 
+```
+http://localhost:5000
+```
 
 ## 📂 CẤU TRÚC THƯ MỤC
 ```
